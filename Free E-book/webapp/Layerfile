@@ -1,0 +1,24 @@
+#Use an Ubuntu 18.04 base for our staging server
+FROM vm/ubuntu:18.04
+
+# Install Python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip
+
+# Install project dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Copy the entire project
+COPY . /app
+WORKDIR /app
+
+# Set environment variables (these will be pulled from webapp.io secrets)
+SECRET ENV SENDGRID_API_KEY
+SECRET ENV FROM_EMAIL
+
+# Run the Flask application with gunicorn
+RUN BACKGROUND gunicorn app:app --bind 0.0.0.0:8000 --workers 3
+
+# Expose the webserver
+EXPOSE WEBSITE http://localhost:8000

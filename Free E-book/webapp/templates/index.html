@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cycle - Free E-book</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            padding: 60px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .book-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .book-cover {
+            position: relative;
+            transition: transform 0.3s ease;
+            perspective: 1000px;
+        }
+
+        .book-cover img {
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .book-cover:hover img {
+            transform: rotateY(10deg) translateY(-10px);
+            box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            background: linear-gradient(45deg, #fff, #a8a8a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #a8a8a8;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .author {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #a8a8a8;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .book-info {
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .book-info-item {
+            text-align: left;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-info-item:first-child::after {
+            content: '';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 20px;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .book-info-icon {
+            font-size: 1rem;
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(74, 144, 226, 0.3));
+        }
+
+        .book-info-text {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .book-info-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .book-info-value {
+            font-size: 0.9rem;
+            background: linear-gradient(45deg, #fff, #a8a8a8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .email-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .email-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #4a90e2 0%, #357abd 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(45deg, #357abd 0%, #2868a0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .download-btn:hover:before {
+            left: 100%;
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(40, 167, 69, 0.2);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #2fd573;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #ff4d6d;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            .author {
+                font-size: 1rem;
+            }
+            .book-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="book-container">
+                        <div class="row align-items-center">
+                            <div class="col-md-5 mb-4 mb-md-0">
+                                <div class="book-cover text-center">
+                                    <img src="static/ebook-cover.jpg" alt="The Cycle Book Cover" class="img-fluid">
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <h1 class="title">The Cycle</h1>
+                                <p class="tagline">"Nothing is what it seems"</p>
+                                <p class="author">by AJ Messick</p>
+                                <div class="book-info">
+                                    <div class="book-info-item">
+                                        <i class="fas fa-book-open book-info-icon"></i>
+                                        <div class="book-info-text">
+                                            <span class="book-info-label">Length:</span>
+                                            <span class="book-info-value">14 Pages</span>
+                                        </div>
+                                    </div>
+                                    <div class="book-info-item">
+                                        <i class="fas fa-hourglass-half book-info-icon"></i>
+                                        <div class="book-info-text">
+                                            <span class="book-info-label">Reading Time:</span>
+                                            <span class="book-info-value">30 Minutes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="description">
+                                    "Let's get one thing straight: I'm not here to sell you a conspiracy. No shadowy figures in dark rooms, no elaborate plots unfolding behind closed doors. I'm here to talk about something much more real. Something that's been right in front of you all along—so obvious, in fact, that you've probably never even thought to question it. It's called the Cycle."
+                                </p>
+                                <div class="download-section">
+                                    <form id="download-form" onsubmit="handleSubmit(event)">
+                                        <input type="email" name="email" id="email" class="email-input" placeholder="Enter your email to download" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                        <button type="submit" class="download-btn">
+                                            <i class="fas fa-envelope me-2"></i> Get Your Free Copy
+                                        </button>
+                                    </form>
+                                    <div id="success-message" class="success-message">
+                                        <i class="fas fa-check-circle me-2"></i> Thank you! Your download will start automatically.
+                                    </div>
+                                    <div id="error-message" class="error-message">
+                                        <i class="fas fa-exclamation-circle me-2"></i> Please enter a valid email address.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            const downloadForm = document.getElementById('download-form');
+            const submitButton = document.querySelector('.download-btn');
+            
+            // Basic email validation
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                return;
+            }
+
+            // Disable button and show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+
+            try {
+                // Send email to backend
+                const response = await fetch('/submit-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Show success message
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                downloadForm.style.display = 'none';
+                
+                // Start download
+                window.location.href = '/download';
+
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-envelope me-2"></i> Get Your Free Copy';
+
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.textContent = 'There was an error. Please try again.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-envelope me-2"></i> Get Your Free Copy';
+            }
+        }
+    </script>
+</body>
+</html>
